@@ -1,12 +1,8 @@
 import React from 'react';
 
-import { useNavigate } from 'react-router-dom';
-
 import './styles.css'
 
-
 export default function Item({ props, handleSelect }) {
-
   return (
     <button type='button' onClick={() => handleSelect(props)} className="item-container" to="/details">
       <img className="item-photo" src={props.photo} alt="item" />
@@ -22,4 +18,3 @@ export default function Item({ props, handleSelect }) {
     </ button>
   );
 }
-// {name, calories, protein, carbohydrates, fiber, blubber, portion, photo}

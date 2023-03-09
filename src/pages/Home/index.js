@@ -11,29 +11,32 @@ import { api } from '../../services/api';
 
 import './styles.css'
 
-const headerButtons = [
-  {
-      icon: <AiOutlineReload size={24} name="reload" color='black'/>,
-      onPress: () => console.log('reload')
-  },
-  {
-      icon: <AiOutlineMore size={24} name="more" color='black'/>,
-      onPress: () => console.log('more')
-  }
-];
+
 
 export default function Home() {
   const [items, setItems] = useState([]);
   const { dispatch } = useContext(SelectedContext);
 
+  const headerButtons = [
+    {
+        icon: <AiOutlineReload size={24} name="reload" color='black'/>,
+        onPress: () => loadItems()
+    },
+    {
+        icon: <AiOutlineMore size={24} name="more" color='black'/>,
+        onPress: () => console.log('more')
+    }
+  ];
+
   const navigate = useNavigate();
 
-  console.log(items)
-  
   const loadItems = async () => {
     const response = await api.get('/fruits.json');
     setItems(response.data);
   }
+
+
+  console.log(items)
 
   const handleSelect = (props) => {
     dispatch({ type: 'select', item: props })
@@ -47,14 +50,12 @@ export default function Home() {
     return (
       <div className="home-container" >
           <Header buttons={headerButtons}/>
-          <ul className='home-content'>
+          <div className='home-content'>
             {items.length > 0 && items.map((item) => (
-                <li>
                 <Item props={item} handleSelect={handleSelect}/>
-                </li>
               ))
             }
-          </ul>
+          </div>
       </ div>
     );
 }
