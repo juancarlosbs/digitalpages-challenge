@@ -32,13 +32,14 @@ export default function Details() {
       <Header buttons={headerButtons}/>
       <button className="back-button" type="button" onClick={() => navigate('/')}>
           <AiOutlineArrowLeft size={24} name="back" color='black'/>
-        </button>
+      </button>
       <div className="details-content">
         <div className="details-item"> 
-          <h1>{state.name}</h1>
-          <img src={state.photo} alt={state.name}/>
-          <h3>Values</h3>
-          <br/>
+          <div className="details-image-name">
+            <img src={state.photo} alt={state.name}/>
+            <h1>{state.name}</h1>
+          </div>
+          <div className="details-values">
           {Object.entries(state).map(([key, value]) => (
             valuesListed.includes(key) &&
               <div className="item-info-item">
@@ -46,6 +47,7 @@ export default function Details() {
               </div>
           )
           )}
+          </div>
         </div>
       </div>
     </div>

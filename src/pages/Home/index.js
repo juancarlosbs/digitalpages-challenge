@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { AiOutlineReload, AiOutlineMore } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import ReactLoading from 'react-loading';
 
 import { SelectedContext } from '../../storage/SelectedContext';
 
@@ -15,6 +16,7 @@ import './styles.css'
 
 export default function Home() {
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { dispatch } = useContext(SelectedContext);
 
   const headerButtons = [
@@ -31,8 +33,10 @@ export default function Home() {
   const navigate = useNavigate();
 
   const loadItems = async () => {
+    setLoading(true);
     const response = await api.get('/fruits.json');
     setItems(response.data);
+    setLoading(false);
   }
 
 
@@ -50,7 +54,9 @@ export default function Home() {
     return (
       <div className="home-container" >
           <Header buttons={headerButtons}/>
+          
           <div className='home-content'>
+          { loading && <ReactLoading type='spin' color='#96be25'/>}
             {items.length > 0 && items.map((item) => (
                 <Item props={item} handleSelect={handleSelect}/>
               ))
