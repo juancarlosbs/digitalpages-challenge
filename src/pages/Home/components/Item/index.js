@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import './styles.css'
 
 
-export default function Item({ props }) {
+export default function Item({ props, handleSelect }) {
 
   return (
-    <Link className="item-container" to="/details">
-      <img className="item-photo"src={props.photo} alt="item" />
+    <button type='button' onClick={() => handleSelect(props)} className="item-container" to="/details">
+      <img className="item-photo" src={props.photo} alt="item" />
       <div className="item-info">
         {Object.entries(props).map(([key, value]) => (
           key !== 'photo' &&
@@ -19,7 +19,7 @@ export default function Item({ props }) {
         )
         )}
       </div>
-    </ Link>
+    </ button>
   );
 }
 // {name, calories, protein, carbohydrates, fiber, blubber, portion, photo}

@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { AiOutlineReload, AiOutlineMore } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+
+import { SelectedContext } from '../../storage/SelectedContext';
 
 import Header from '../../components/molecules/Header';
 import Item from './components/Item';
+
+import { api } from '../../services/api';
 
 import './styles.css'
 
@@ -17,30 +22,39 @@ const headerButtons = [
   }
 ];
 
-const items = [
-  {
-    "name": "Abacaxi",
-    "calories": "48",
-    "protein": "0,54 g",
-    "carbohydrates": "12,63 g",
-    "fiber": "1,4 g",
-    "blubber": "0,12 g",
-    "portion": "1,2 fatias",
-    "photo": "http://pocs.digitalpages.com.br/mock/api/fruits-api/fruits/abacaxi.jpg"
-  },
-];
-
 export default function Home() {
+  const [items, setItems] = useState([]);
+  const { dispatch } = useContext(SelectedContext);
+
+  const navigate = useNavigate();
+
+  console.log(items)
+  
+  const loadItems = async () => {
+    const response = await api.get('/fruits.json');
+    setItems(response.data);
+  }
+
+  const handleSelect = (props) => {
+    dispatch({ type: 'select', item: props })
+    navigate('/details')
+  }
+
+  useEffect(() => {
+    loadItems();
+},[])
 
     return (
       <div className="home-container" >
           <Header buttons={headerButtons}/>
-          <div className='home-content'>
-            { items.map((item) => (
-                <Item props={item} />
+          <ul className='home-content'>
+            {items.length > 0 && items.map((item) => (
+                <li>
+                <Item props={item} handleSelect={handleSelect}/>
+                </li>
               ))
             }
-          </div>
+          </ul>
       </ div>
     );
 }
